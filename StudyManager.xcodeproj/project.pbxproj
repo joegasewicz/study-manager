@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		381E0DDB275599A700953CC6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 381E0DDA275599A700953CC6 /* README.md */; };
 		38D9CB932752B336003E6C24 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D9CB922752B336003E6C24 /* AppDelegate.swift */; };
 		38D9CB952752B336003E6C24 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D9CB942752B336003E6C24 /* ViewController.swift */; };
 		38D9CB982752B336003E6C24 /* StudyManager.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 38D9CB962752B336003E6C24 /* StudyManager.xcdatamodeld */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		381E0DDA275599A700953CC6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		38D9CB8F2752B336003E6C24 /* StudyManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38D9CB922752B336003E6C24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38D9CB942752B336003E6C24 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				38D9CB922752B336003E6C24 /* AppDelegate.swift */,
 				38D9CB942752B336003E6C24 /* ViewController.swift */,
+				381E0DDA275599A700953CC6 /* README.md */,
 				38D9CB992752B338003E6C24 /* Assets.xcassets */,
 				38D9CB9B2752B338003E6C24 /* Main.storyboard */,
 				38D9CB9E2752B338003E6C24 /* StudyManager.entitlements */,
@@ -122,6 +125,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				381E0DDB275599A700953CC6 /* README.md in Resources */,
 				38D9CB9A2752B338003E6C24 /* Assets.xcassets in Resources */,
 				38D9CB9D2752B338003E6C24 /* Main.storyboard in Resources */,
 			);
