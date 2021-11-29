@@ -17,6 +17,7 @@
 
 /* Begin PBXFileReference section */
 		381E0DDA275599A700953CC6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		381E0DDC27559D1800953CC6 /* study-manager.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "study-manager.png"; sourceTree = "<group>"; };
 		38D9CB8F2752B336003E6C24 /* StudyManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StudyManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38D9CB922752B336003E6C24 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38D9CB942752B336003E6C24 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -40,6 +41,7 @@
 		38D9CB862752B336003E6C24 = {
 			isa = PBXGroup;
 			children = (
+				381E0DDC27559D1800953CC6 /* study-manager.png */,
 				381E0DDA275599A700953CC6 /* README.md */,
 				38D9CB912752B336003E6C24 /* StudyManager */,
 				38D9CB902752B336003E6C24 /* Products */,

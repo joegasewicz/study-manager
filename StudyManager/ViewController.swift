@@ -109,7 +109,13 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     }
     
     @IBAction func deleteClickedStudyItem(_ sender: Any) {
-        
+        let row = TableView.selectedRow
+        let studyItem = studyItems[row]
+        if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
+            context.delete(studyItem)
+            (NSApplication.shared.delegate as? AppDelegate)?.saveAction(nil)
+            getStudyItems()
+        }
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -136,6 +142,6 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     }
     
     func tableViewSelectionDidChange(_ notification: Notification) {
-        DeleteButton.isHidden = true
+        DeleteButton.isHidden = false
     }
 }
