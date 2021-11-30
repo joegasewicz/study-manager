@@ -15,11 +15,12 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     @IBOutlet weak var ImportantCheckBox: NSButton!
     @IBOutlet weak var TableView: NSTableView!
     @IBOutlet weak var DeleteButton: NSButton!
-
-    var categories: [Category] = []
-    var studyItems: [StudyItem] = []
-    var categorySelectValues: [String] = []
-    var selectedCategory: Category?
+    @IBOutlet weak var tableName: NSTextField!
+    
+    var categories : [Category] = []
+    var studyItems : [StudyItem] = []
+    var categorySelectValues : [String] = []
+    var selectedCategory : Category?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +33,13 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         getStudyItems()
         if selectedCategory == nil && categories.count > 0 {
             selectedCategory = categories[0]
+            let name = selectedCategory?.name
+            tableName.stringValue = name!
         }
     }
     
     @IBAction func CategoryAddButton(_ sender: Any) {
-        var newCategory: Category?
+        var newCategory : Category?
         if CategoryTextField.stringValue != "" {
             if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
                 newCategory = Category(context: context)
@@ -57,7 +60,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             // Update the selected category
             self.selectedCategory = newCategory
         }
-
+        // Update table name
+        tableName.stringValue = (newCategory?.name)!
+        // Update the table
+        getStudyItems(selectedCategoryName: newCategory?.name)
     }
     
     
@@ -81,11 +87,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         getStudyItems()
     }
     
-    func getCategories() {
-        // Get categories from Core Data
+    func getCategories() -> Void {
         if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
             do {
-                self.categories = try context.fetch(Category.fetchRequest())
+            self.categories = try context.fetch(Category.fetchRequest())
             } catch {
                 print("Error fetching Categories")
             }
@@ -97,17 +102,39 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         CategorySelect.addItems(withTitles: categorySelectValues)
 
         TableView.reloadData()
+        return
     }
     
-    func getStudyItems() {
+    func getStudyItems(selectedCategoryName : String? = nil) -> Void {
+        let categoryName = selectedCategoryName != nil ? selectedCategoryName : selectedCategory?.name
+        if categoryName == nil {
+            return
+        }
+        // Get studyItems by parent category from Core Data
         if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
             do {
-                self.studyItems = try context.fetch(StudyItem.fetchRequest())
+                let fetchRequest = NSFetchRequest<StudyItem>(entityName: "StudyItem")
+                let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", categoryName!)
+                fetchRequest.predicate = categoryPredicate
+                self.studyItems = try context.fetch(fetchRequest)
             } catch {
-                print("Error fetching StudyItems!")
+                print("Error fetching study items")
             }
         }
         TableView.reloadData()
+        return
+    }
+    
+    
+    @IBAction func categoryItemDidChange(_ sender: Any) {
+        let selectedCategoryTitle = CategorySelect.selectedItem?.title
+        for category in categories {
+            if category.name == selectedCategoryTitle {
+                self.selectedCategory = category
+            }
+        }
+        getStudyItems(selectedCategoryName : selectedCategoryTitle)
+        tableName.stringValue = selectedCategoryTitle!
     }
     
     // MARK: - TableView Datasource Methods
@@ -155,4 +182,5 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     func tableViewSelectionDidChange(_ notification: Notification) {
         DeleteButton.isHidden = false
     }
+    
 }
