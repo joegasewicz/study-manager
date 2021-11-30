@@ -15,6 +15,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     @IBOutlet weak var ImportantCheckBox: NSButton!
     @IBOutlet weak var TableView: NSTableView!
     @IBOutlet weak var DeleteButton: NSButton!
+
     var categories: [Category] = []
     var studyItems: [StudyItem] = []
     var categorySelectValues: [String] = []
@@ -26,34 +27,37 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         let fp = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         print("fp path: \(fp)")
         // db at : /Users/josefgasewicz/Library/Containers/JRG-DEVELOPER-LTD.StudyManager/Data/Library/Application\ Support/StudyManager/
-        
+        CategorySelect.removeAllItems()
         getCategories()
         getStudyItems()
-        CategorySelect.removeAllItems()
-        if categories.count > 0 {
-            for category in categories {
-                categorySelectValues.append(category.name!)
-            }
-            CategorySelect.addItems(withTitles: categorySelectValues)
-        }
-        if selectedCategory == nil {
+        if selectedCategory == nil && categories.count > 0 {
             selectedCategory = categories[0]
         }
-        
     }
     
-    
     @IBAction func CategoryAddButton(_ sender: Any) {
+        var newCategory: Category?
         if CategoryTextField.stringValue != "" {
             if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
-                let category = Category(context: context)
-                category.name = CategoryTextField.stringValue
+                newCategory = Category(context: context)
+                newCategory?.name = CategoryTextField.stringValue
             }
         }
         (NSApplication.shared.delegate as? AppDelegate)?.saveAction(nil)
         
         CategoryTextField.stringValue = ""
         getCategories()
+        if newCategory != nil {
+            // After save the new category set the PopUpButton's selected value
+            for (index, category) in categories.enumerated() {
+                if category.name == newCategory?.name! {
+                    CategorySelect.selectItem(at: index)
+                }
+            }
+            // Update the selected category
+            self.selectedCategory = newCategory
+        }
+
     }
     
     
@@ -81,18 +85,24 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         // Get categories from Core Data
         if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
             do {
-                categories = try context.fetch(Category.fetchRequest())
+                self.categories = try context.fetch(Category.fetchRequest())
             } catch {
                 print("Error fetching Categories")
             }
         }
+        for category in self.categories {
+            categorySelectValues.append(category.name!)
+        }
+        CategorySelect.removeAllItems()
+        CategorySelect.addItems(withTitles: categorySelectValues)
+
         TableView.reloadData()
     }
     
     func getStudyItems() {
         if let context = (NSApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
             do {
-                studyItems = try context.fetch(StudyItem.fetchRequest())
+                self.studyItems = try context.fetch(StudyItem.fetchRequest())
             } catch {
                 print("Error fetching StudyItems!")
             }
@@ -115,6 +125,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             context.delete(studyItem)
             (NSApplication.shared.delegate as? AppDelegate)?.saveAction(nil)
             getStudyItems()
+            DeleteButton.isHidden = true
         }
     }
     
