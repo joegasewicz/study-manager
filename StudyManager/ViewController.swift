@@ -30,12 +30,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         // db at : /Users/josefgasewicz/Library/Containers/JRG-DEVELOPER-LTD.StudyManager/Data/Library/Application\ Support/StudyManager/
         CategorySelect.removeAllItems()
         getCategories()
-        getStudyItems()
-        if selectedCategory == nil && categories.count > 0 {
-            selectedCategory = categories[0]
-            let name = selectedCategory?.name
-            tableName.stringValue = name!
-        }
+        selectedCategory = categories[0]
+        let name = selectedCategory?.name
+        tableName.stringValue = name!
+        getStudyItems(selectedCategoryName: selectedCategory?.name)
     }
     
     @IBAction func CategoryAddButton(_ sender: Any) {
